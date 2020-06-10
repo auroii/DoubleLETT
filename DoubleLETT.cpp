@@ -33,7 +33,7 @@ void DoubleLETT::sqrtDecomposition() {
         level2[i] = i*len;
     }
 
-    /*TEST 
+    
     D(len);
     for(int x : euler) cout << x << ' ';
     cout << '\n';
@@ -44,7 +44,7 @@ void DoubleLETT::sqrtDecomposition() {
             cout << euler[i] << ' ';
         }
         cout << '\n';
-    }*/
+    }
 }
 
 
