@@ -23,7 +23,7 @@ int main(int argc, char **argv) {
     DoubleLETT *t = new DoubleLETT(g);
 
     delete t;
-
+    
     return 0;
 
 }
