@@ -11,7 +11,7 @@ int main(int argc, char **argv) {
     int n, m;
     cin >> n >> m;
 
-    vector<vector<int>> g(n, vector<int>());
+    vector<vector<int>> g(n + 1, vector<int>());
 
     for(int i = 0; i < m; ++i) {
         int x, y;
@@ -23,7 +23,7 @@ int main(int argc, char **argv) {
     DoubleLETT *t = new DoubleLETT(g);
 
     delete t;
-    
+
     return 0;
 
 }

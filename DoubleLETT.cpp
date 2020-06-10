@@ -7,6 +7,7 @@
 using std::vector;
 using std::cout;
 using std::min;
+using std::make_pair;
 
 #define D(x) cout << #x << " " << x << '\n'
 
@@ -14,12 +15,11 @@ void DoubleLETT::eulerTour(vector<vector<int>> &g, int node, int h) {
     seen[node] = true;
     height[node] = h;
     first[node] = euler.size();
-    euler.push_back(node);
-
     for(int to : g[node]) {
         if(!seen[to]) {
+            euler.push_back(make_pair(node, to));
             eulerTour(g, to, h+1);
-            euler.push_back(node);
+            euler.push_back(make_pair(to, node));
         }
 
     }
@@ -33,18 +33,24 @@ void DoubleLETT::sqrtDecomposition() {
         level2[i] = i*len;
     }
 
-    
-    D(len);
-    for(int x : euler) cout << x << ' ';
-    cout << '\n';
+    while(level2.back() >= euler.size()) level2.pop_back();
 
+
+    //----------TEST---------------------------
+    D(len);
+    cout << "EULER TOUR:  ";
+    for(pair<int, int> x : euler) cout << "(" << x.first << " " << x.second << ") ";
+    cout << "\n\n";
+
+    cout << "SQRT DECOMPOSITION:\n";
     for(int x : level2) {
-        cout << x << ": ";
+        cout << "2LVL INDEX: " << x << ": ";
         for(int i = x; i < min((int) euler.size(), x+len); ++i) {
-            cout << euler[i] << ' ';
+            cout << "(" << euler[i].first << ' ' << euler[i].second << ") ";
         }
         cout << '\n';
     }
+    //END OF TEST--------------------------------------------------
 }
 
 
