@@ -5,7 +5,7 @@ using std::vector;
 
 
 /*
-Class with implements a double level euler tour tree
+Class that implements a double level euler tour tree
 @height: height of nodes in original tree
 @euler: euler tour array, TODO: each element represents an edge instead nodes
 @first: each element is the first apparition index in DFS
