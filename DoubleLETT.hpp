@@ -4,9 +4,17 @@
 
 
 class DoubleLETT {
+private:
+    vector<int> height, euler, first;
+    vector<bool> seen;
+    void eulerTour(vector<vector<int>> &g, int node, int h = 0);
+
+
+
 
 public:
-    DoubleLETT(vector<vector<int> > &graph);
+    DoubleLETT(void) {}
+    DoubleLETT(vector<vector<int>> &g);
 
 
 };
