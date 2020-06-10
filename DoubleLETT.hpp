@@ -1,12 +1,12 @@
 #include <vector>
 
+ using std::vector;
+
+
 class DoubleLETT {
-    using std::verctor<int>;
+
+public:
+    DoubleLETT(vector<vector<int> > &graph);
 
 
-    DoubleLETT(vector<vector<int>> &graph) {
-        
-    }
-
-
-}
+};
