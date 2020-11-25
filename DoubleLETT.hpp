@@ -4,9 +4,13 @@
 #include <vector>
 #include <iostream>
 #include "Node.hpp"
+#include <list>
 
 using std::vector;
 using std::pair;
+using std::complex;
+using std::list;
+
 
 /*
 Class that implements a double level euler tour tree
@@ -20,17 +24,20 @@ Class that implements a double level euler tour tree
 
 class DoubleLETT {
 public: //for now
-    vector<int> height, first, level2;
+    vector<int> height, first;
     vector<Node> euler;
-    vector<bool> seen;
+    vector<int> in, out;
+    vector<complex<double>> voltages;
+    int T, len; //timer in DFS
 
+    vector<list<Node>> sqrtEuler;
 
-    void eulerTour(vector<vector<Node>>& g, int node,  int h = 0);
+    void eulerTour(vector<vector<Node>>& g, Node cur, int h = 0);
     void sqrtDecomposition();
 
     DoubleLETT(void) {}
-    DoubleLETT(vector<vector<Node>> &g);
-
+    DoubleLETT(vector<vector<Node>> &g, complex<double> init = complex<double>(0, 0));
+    //~DoubleLETT();
 
 };
 

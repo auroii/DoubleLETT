@@ -3,7 +3,7 @@
 
 using std::complex;
 
-Node::Node(complex<double> voltage, int l) {
+Node::Node(int l, complex<double> voltage) {
     V = voltage;
     I = 0;
     S = 0;

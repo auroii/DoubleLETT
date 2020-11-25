@@ -12,7 +12,7 @@ public:
     complex<double> V; //voltage
     complex<double> S; //load power
     int label;
-    Node(complex<double> voltage, int l);
+    Node(int l, complex<double> voltage = complex<double>(0, 0));
 };
 
 
