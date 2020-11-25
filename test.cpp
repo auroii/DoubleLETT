@@ -33,7 +33,10 @@ int main(int argc, char **argv) {
         }
         cout << '\n';
     }
-
+    const int STEPS = 100;
+    for(int it = 0; it < STEPS; ++it) {
+        t->currentCalculation();
+    }
 
     delete t;
 
