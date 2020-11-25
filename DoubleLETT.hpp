@@ -27,6 +27,15 @@ private:
 public:
     DoubleLETT(void) {}
     DoubleLETT(vector<vector<int>> &g);
-
+    
 
 };
+
+
+
+
+
+
+
+
+

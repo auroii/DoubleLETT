@@ -7,6 +7,17 @@ using std::cin;
 using std::cout;
 
 
+void dfs(vector<vector<int>> &g, vector<int>& vis, int v) {
+    vis[v] = true;
+
+    for(int u : g[v]) {
+        if(!vis[u]) {
+            dfs(g, vis, u);
+        }
+    }
+} 
+
+
 int main(int argc, char **argv) {
     int n, m;
     cin >> n >> m;
@@ -19,6 +30,10 @@ int main(int argc, char **argv) {
         g[x].push_back(y);
         g[y].push_back(x);
     }
+
+    vector<int> vis(n+1);
+    dfs(g, vis, 1);
+
 
     DoubleLETT *t = new DoubleLETT(g);
 
