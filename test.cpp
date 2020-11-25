@@ -2,6 +2,7 @@
 #include <vector>
 #include "DoubleLETT.hpp"
 #include "Node.hpp"
+#include "Edge.hpp"
 #include <complex>
 
 
@@ -14,15 +15,22 @@ using std::complex;
 int main(int argc, char **argv) {
     int n, m;
     cin >> n >> m;
-    vector<vector<Node>> g(n + 1, vector<Node>());
+
+    vector<Node> nodes;
+    for(int i = 0; i < n+1; ++i) {
+        nodes.push_back(Node(i+1));
+    }
+    vector<Edge> edges;
+
     for(int i = 0; i < m; ++i) {
         int x, y;
         cin >> x >> y;
-        g[x].push_back(Node(y));
-        g[y].push_back(Node(x));
+        edges.push_back(Edge(i, nodes[x-1], nodes[y-1]));
     }
 
-    DoubleLETT *t = new DoubleLETT(g);
+    DoubleLETT *t = new DoubleLETT(nodes, edges);
+
+
     for(int i = 0; i < t->euler.size(); ++i) cout << t->euler[i].label << ' ';
     cout << '\n';
 

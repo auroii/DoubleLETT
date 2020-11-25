@@ -8,11 +8,16 @@ using std::complex;
 
 class Node {
 public:
-    complex<double> I; //current
-    complex<double> V; //voltage
-    complex<double> S; //load power
+    complex<double> current; //current
+    complex<double> voltage; //voltage
+    complex<double> load;; //load power
     int label;
-    Node(int l, complex<double> voltage = complex<double>(0, 0));
+    Node(int l, complex<double> voltage = complex<double>(1, 1),
+     complex<double> current = complex<double>(1, 1),
+      complex<double> load = complex<double>(1, 1));
+
+    void updateCurrent();
+
 };
 
 
