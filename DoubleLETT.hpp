@@ -27,14 +27,14 @@ public: //for now
     vector<int> height, first;
     vector<Node> euler;
     vector<int> in, out;
-    vector<complex<double>> voltages;
+    vector<complex<double>> voltages, currents, powerLoads;
     int T, len; //timer in DFS
 
     vector<list<Node>> sqrtEuler;
 
     void eulerTour(vector<vector<Node>>& g, Node cur, int h = 0);
     void sqrtDecomposition();
-
+    void currentCalculation();
     DoubleLETT(void) {}
     DoubleLETT(vector<vector<Node>> &g, complex<double> init = complex<double>(0, 0));
     //~DoubleLETT();
