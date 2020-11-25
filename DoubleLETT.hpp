@@ -1,5 +1,9 @@
+#ifndef DOUBLE_LETT_HPP
+#define DOUBLE_LETT_HPP
+
 #include <vector>
 #include <iostream>
+#include "Node.hpp"
 
 using std::vector;
 using std::pair;
@@ -15,23 +19,22 @@ Class that implements a double level euler tour tree
 */
 
 class DoubleLETT {
-private:
+public: //for now
     vector<int> height, first, level2;
-    vector<pair<int, int>> euler;
+    vector<Node> euler;
     vector<bool> seen;
 
 
-    void eulerTour(vector<vector<int>> &g, int node, int h = 0);
+    void eulerTour(vector<vector<Node>>& g, int node,  int h = 0);
     void sqrtDecomposition();
 
-public:
     DoubleLETT(void) {}
-    DoubleLETT(vector<vector<int>> &g);
-    
+    DoubleLETT(vector<vector<Node>> &g);
+
 
 };
 
-
+#endif
 
 
 
