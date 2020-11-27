@@ -11,7 +11,7 @@ Node::Node(int l, complex<double> _voltage, complex<double> _current, complex<do
     label = l;
 }
 
-void Node::updateCurrent() {
+void Node::updateGNDCurrent() {
     current = conj(load/voltage);
 }
 

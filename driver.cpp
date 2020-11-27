@@ -6,10 +6,7 @@
 #include "Utils.hpp"
 
 using std::vector;
-using std::cin;
-using std::cout;
 using std::complex;
-
 
 
 int main(int argc, char **argv) {
@@ -22,7 +19,7 @@ int main(int argc, char **argv) {
     DoubleLETT *DLT = new DoubleLETT(adj, Z, init);
 
     delete DLT;
-    
+
     return 0;
 
 }

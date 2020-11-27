@@ -24,7 +24,6 @@ private: //for now
 
 
 public:
-    void currentCalculation(vector<Node>&); //calcula as correntes para o terra deste vector
     void updateLoadNode(int _label, complex<double> _load);
     
     double getPrecision();

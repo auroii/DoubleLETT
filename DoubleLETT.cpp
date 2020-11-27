@@ -54,13 +54,6 @@ DoubleLETT::DoubleLETT(vector<vector<int>> &adj, map<pair<int, int>, complex<dou
     precision = 1e-9;
 }
 
-
-void DoubleLETT::currentCalculation(vector<Node> &a) {
-    for(int i = 0; i < a.size(); ++i) {
-        a[i].updateCurrent();
-    }
-}
-
 void DoubleLETT::updateLoadNode(int label, complex<double> powerload) {
     nodeList[label].setPowerLoad(powerload);
     chargeFlow();
@@ -74,6 +67,13 @@ void DoubleLETT::setPrecision(double p) {
 double DoubleLETT::getPrecision() {
     return precision;
 }
+
+
+void DoubleLETT::chargeFlow() {
+    for(int i = 0; i < nodeList.size(); ++i) 
+        nodeList[i].updateGNDCurrent();
+}
+
 
 
 

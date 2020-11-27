@@ -23,7 +23,7 @@ public:
       complex<double> load = complex<double>(0, 0));
 
 
-    void updateCurrent();
+    void updateGNDCurrent();
 
 
     complex<double> getPowerLoad();
