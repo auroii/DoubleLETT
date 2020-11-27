@@ -6,64 +6,73 @@
 #include "Node.hpp"
 #include <ctime>
 #include <cstdlib>
+#include "Utils.hpp"
 
 using std::vector;
-using std::cout;
+using std::cerr;
 using std::min;
 using std::make_pair;
 using std::complex;
 using std::conj;
 
-void DoubleLETT::eulerTour(vector<vector<int>> &g, int cur, int h) {
-    in[cur] = ++T;
-    height[cur] = h;
-    first[cur] = euler.size();
-    euler.push_back(cur);   
-    for(int to : g[cur]) {
+
+//Heavy Light Decomposition -> pesquisar
+
+
+void DoubleLETT::eulerTour(vector<vector<int>> &adj, int node, int d) {
+    in[node] = ++T; //timer da meu tempo
+    depth[node] = d;
+    first[node] = euler.size(); //seto o primeiro indice do array euler que o Node(label) cur aparace
+    euler.push_back(node);    //insere o label cur no array euler
+    for(int to : adj[node]) { //g[cur] contem todos os nos adjacentes a cur 
         if(in[to] == 0) {
-            eulerTour(g, to, h+1);
-            euler.push_back(cur);
+            eulerTour(adj, to, d+1);
+            euler.push_back(node); //usando a pilha de recursão, eu insiro ele novamente
         }
     }
-    out[cur] = ++T;
-}
-
-void DoubleLETT::sqrtDecomposition() {
-    len = sqrt(euler.size() + .0) + 1;
-    sqrtEuler.resize(len);
-    for(int i = 0; i < euler.size(); ++i) {
-        sqrtEuler[i/len].push_back(euler[i]);
-    }
+    out[node] = ++T;
 }
 
 
-DoubleLETT::DoubleLETT(vector<Node>& nodes, vector<Edge>& edges, complex<double> init) {
-    in.resize(nodes.size());
-    out.resize(nodes.size());
-    height.resize(nodes.size());
-    first.resize(nodes.size());   
+DoubleLETT::DoubleLETT(vector<vector<int>> &adj, map<pair<int, int>, complex<double>>& _Z, complex<double> init) {
+    in.resize(adj.size());
+    out.resize(adj.size());
+    depth.resize(adj.size());
+    first.resize(adj.size());   
+    Z.swap(_Z);
     T = 0;
-    vector<vector<int>> g(nodes.size(), vector<int>());
-    for(int i = 0; i < edges.size(); ++i) { 
-        Edge cur = edges[i];
-        g[cur.a.label].push_back(cur.b.label);
-        g[cur.b.label].push_back(cur.a.label);
+    
+    for(int i = 0; i < adj.size(); ++i) {
+        nodeList.emplace_back(i);
     }
-
-    eulerTour(g,  1);
+    eulerTour(adj, ROOT, 0);
 
     for(int i = 0; i < euler.size(); ++i) {
-        euler[i].voltage = init;
-        euler[i].load = complex<double>(1, 1);
+        nodeList[euler[i]].setVoltage(init);
     }
-    sqrtDecomposition();
+
+    precision = 1e-9;
 }
 
 
-void DoubleLETT::currentCalculation() {
-    for(int i = 0; i < euler.size(); ++i) {
-        euler[i].updateCurrent();
+void DoubleLETT::currentCalculation(vector<Node> &a) {
+    for(int i = 0; i < a.size(); ++i) {
+        a[i].updateCurrent();
     }
+}
+
+void DoubleLETT::updateLoadNode(int label, complex<double> powerload) {
+    nodeList[label].setPowerLoad(powerload);
+    chargeFlow();
+}
+
+
+void DoubleLETT::setPrecision(double p) {
+    precision = p;
+}
+
+double DoubleLETT::getPrecision() {
+    return precision;
 }
 
 

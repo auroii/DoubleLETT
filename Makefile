@@ -1,26 +1,23 @@
-all: Node.o Edge.o DoubleLETT.o test.o exe
+all: Utils.o Node.o DoubleLETT.o driver.o exe
 
 
 
-exe: DoubleLETT.o Edge.o Node.o test.o
-	g++ -std=c++17 Node.o Edge.o DoubleLETT.o test.o -o exe
+exe: DoubleLETT.o Utils.o Node.o driver.o
+	g++ -std=c++17 Utils.o Node.o DoubleLETT.o driver.o -o exe
 
 
-DoubleLETT.o: DoubleLETT.cpp Node.hpp Edge.hpp DoubleLETT.hpp
+DoubleLETT.o: DoubleLETT.cpp Utils.hpp Node.hpp DoubleLETT.hpp
 	g++ -std=c++17 -c DoubleLETT.cpp
 
 
 Node.o: Node.cpp Node.hpp
 	g++ -std=c++17 -c Node.cpp 
 
-test.o: Edge.hpp DoubleLETT.hpp Node.hpp test.cpp
-	g++ -std=c++17 -c test.cpp
+driver.o: Utils.hpp DoubleLETT.hpp Node.hpp driver.cpp
+	g++ -std=c++17 -c driver.cpp
 
-
-Edge.o: Edge.hpp Node.hpp Edge.cpp
-	g++ -std=c++17 -c Edge.cpp
-
-
+Utils.o: Utils.hpp Utils.cpp
+	g++ -std=c++17 -c Utils.cpp
 
 
 run:

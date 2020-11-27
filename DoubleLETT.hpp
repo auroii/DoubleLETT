@@ -4,39 +4,37 @@
 #include <vector>
 #include <iostream>
 #include "Node.hpp"
-#include "Edge.hpp"
-#include <list>
+#include <map>
 
 using std::vector;
 using std::pair;
 using std::complex;
-using std::list;
-
-
-/*
-Class that implements a double level euler tour tree
-@height: height of nodes in original tree
-@euler: euler tour array
-@first: each element is the first apparition index in DFS
-@seen: auxiliar array for DFS euler tour
-@level2: sqrt decomposition of euler tour array
-
-*/
+using std::map;
 
 class DoubleLETT {
-public: //for now
-    vector<int> height, first;
-    vector<Node> euler;
+private: //for now
+    vector<int> depth, first; //TODO last
+    vector<int> euler;
     vector<int> in, out;
-    int T, len; //timer in DFS
+    vector<Node> nodeList;
+    int T; //timer in DFS
+    map<pair<int, int>, complex<double>> Z;
+    void eulerTour(vector<vector<int>>& adj, int node, int d = 0);
+    double precision;
 
-    vector<list<Node>> sqrtEuler;
 
-    void eulerTour(vector<vector<int>>& g, int cur, int h = 0);
-    void sqrtDecomposition();
-    void currentCalculation();
+public:
+    void currentCalculation(vector<Node>&); //calcula as correntes para o terra deste vector
+    void updateLoadNode(int _label, complex<double> _load);
+    
+    double getPrecision();
+    void setPrecision(double);
+
+    void chargeFlow();
+
     DoubleLETT(void) {}
-    DoubleLETT(vector<Node>& nodes, vector<Edge> &edges, complex<double> init = complex<double>(0, 0));
+    DoubleLETT(vector<vector<int>>& adj, map<pair<int, int>, complex<double>>& Z,
+     complex<double> init = complex<double>(0, 0));
     //~DoubleLETT();
 
 };
