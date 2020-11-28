@@ -4,12 +4,13 @@
 #include <vector>
 #include <iostream>
 #include "Node.hpp"
-#include <map>
+#include <unordered_map>
+#include "Utils.hpp"
 
 using std::vector;
 using std::pair;
 using std::complex;
-using std::map;
+using std::unordered_map;
 
 class DoubleLETT {
 private: //for now
@@ -18,7 +19,7 @@ private: //for now
     vector<int> in, out;
     vector<Node> nodeList;
     int T; //timer in DFS
-    map<pair<int, int>, complex<double>> Z;
+    unordered_map<pair<int, int>, complex<double>, HashPair> Z;
     void eulerTour(vector<vector<int>>& adj, int node, int d = 0);
     double precision;
     double maxDiffRealPower;
@@ -38,7 +39,7 @@ public:
     void chargeFlow();
 
     DoubleLETT(void) {}
-    DoubleLETT(vector<vector<int>>& adj, map<pair<int, int>, complex<double>>& Z,
+    DoubleLETT(vector<vector<int>>& adj, unordered_map<pair<int, int>, complex<double>, HashPair>& Z,
      complex<double> init = complex<double>(0, 0));
     //~DoubleLETT();
 

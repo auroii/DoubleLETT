@@ -3,6 +3,7 @@
 #include <complex>
 #include <iostream>
 #include "Utils.hpp"
+#include <unordered_map>
 
 using std::pair;
 using std::vector;
@@ -10,11 +11,11 @@ using std::complex;
 using std::map;
 using std::cin;
 using std::polar;
+using std::unordered_map;
 
 
 
-
-void readData(vector<vector<int>>& adj, map<pair<int, int>, complex<double>> &Z, complex<double>& init) {
+void readData(vector<vector<int>>& adj, unordered_map<pair<int, int>, complex<double>, HashPair> &Z, complex<double>& init) {
     int n, m;
     cin >> n >> m;
     adj.assign(n+1, vector<int>());

@@ -10,6 +10,7 @@ Node::Node(int l, complex<double> _voltage, complex<double> _current, complex<do
     load = _load;
     label = l;
     degree = 0;
+    currentDownstream = 0;
 }
 
 void Node::updateGNDCurrent() {

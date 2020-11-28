@@ -39,7 +39,7 @@ void DoubleLETT::eulerTour(vector<vector<int>> &adj, int node, int d) {
 }
 
 
-DoubleLETT::DoubleLETT(vector<vector<int>> &adj, map<pair<int, int>, complex<double>>& _Z, complex<double> init) {
+DoubleLETT::DoubleLETT(vector<vector<int>> &adj, unordered_map<pair<int, int>, complex<double>, HashPair>& _Z, complex<double> init) {
     in.resize(adj.size());
     out.resize(adj.size());
     depth.resize(adj.size());
@@ -100,7 +100,7 @@ void DoubleLETT::chargeFlow() {
     for(int i = 0; i < nodeList.size(); ++i) {
         nodeList[i].updateGNDCurrent();
     }
-    
+
 }
 
 
