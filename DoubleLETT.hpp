@@ -21,13 +21,19 @@ private: //for now
     map<pair<int, int>, complex<double>> Z;
     void eulerTour(vector<vector<int>>& adj, int node, int d = 0);
     double precision;
-
+    double maxDiffRealPower;
+    double maxDiffReactivePower;
 
 public:
     void updateLoadNode(int _label, complex<double> _load);
     
     double getPrecision();
     void setPrecision(double);
+
+    double getMaxDiffRealPower();
+    double getMaxDiffReactivePower();
+    void updateMaxDiffRealPower(Node &);
+    void updateMaxDiffReactivePower(Node &);
 
     void chargeFlow();
 

@@ -9,6 +9,7 @@ Node::Node(int l, complex<double> _voltage, complex<double> _current, complex<do
     current = _current;
     load = _load;
     label = l;
+    degree = 0;
 }
 
 void Node::updateGNDCurrent() {
@@ -18,6 +19,11 @@ void Node::updateGNDCurrent() {
 complex<double> Node::getPowerLoad() {
     return voltage * conj(current);
 }
+
+complex<double> Node::getDiffPowerLoad() {
+    return getPowerLoad() - load;
+}
+
 
 complex<double> Node::getVoltage() {
     return voltage;
@@ -31,7 +37,6 @@ int Node::getLabel() {
 }
 
 
-
 void Node::setPowerLoad(complex<double> _load) {
     load = _load;
 }
@@ -41,6 +46,26 @@ void Node::setVoltage(complex<double> _voltage) {
 void Node::setCurrent(complex<double> _current) {
     current = _current;
 }
+
+int Node::getDegree() {
+    return degree;
+}
+
+void Node::updateDegree() {
+    degree++;
+}
+
+complex<double> Node::getCurrentDownstream() {
+    return currentDownstream;
+}
+
+void Node::addCurrentDownstream(complex<double> I) {
+    currentDownstream += I;
+}
+
+
+
+
 
 
 

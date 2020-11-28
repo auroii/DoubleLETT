@@ -7,6 +7,7 @@
 #include <ctime>
 #include <cstdlib>
 #include "Utils.hpp"
+#include <complex>
 
 using std::vector;
 using std::cerr;
@@ -14,6 +15,9 @@ using std::min;
 using std::make_pair;
 using std::complex;
 using std::conj;
+using std::max;
+using std::real;
+using std::imag;
 
 
 //Heavy Light Decomposition -> pesquisar
@@ -26,6 +30,7 @@ void DoubleLETT::eulerTour(vector<vector<int>> &adj, int node, int d) {
     euler.push_back(node);    //insere o label cur no array euler
     for(int to : adj[node]) { //g[cur] contem todos os nos adjacentes a cur 
         if(in[to] == 0) {
+            nodeList[node].updateDegree();
             eulerTour(adj, to, d+1);
             euler.push_back(node); //usando a pilha de recursão, eu insiro ele novamente
         }
@@ -46,17 +51,22 @@ DoubleLETT::DoubleLETT(vector<vector<int>> &adj, map<pair<int, int>, complex<dou
         nodeList.emplace_back(i);
     }
     eulerTour(adj, ROOT, 0);
-
+    for(int x : euler) cerr << x << ' ';
+    cerr << '\n';
     for(int i = 0; i < euler.size(); ++i) {
         nodeList[euler[i]].setVoltage(init);
     }
 
+    maxDiffReactivePower = maxDiffRealPower = 0;
     precision = 1e-9;
 }
 
 void DoubleLETT::updateLoadNode(int label, complex<double> powerload) {
     nodeList[label].setPowerLoad(powerload);
-    chargeFlow();
+
+    while(getMaxDiffReactivePower() > precision || getMaxDiffRealPower() > precision) {
+        chargeFlow();
+    }
 }
 
 
@@ -68,10 +78,29 @@ double DoubleLETT::getPrecision() {
     return precision;
 }
 
+double DoubleLETT::getMaxDiffReactivePower() {
+    return maxDiffReactivePower;
+}
+
+double DoubleLETT::getMaxDiffRealPower() {
+    return maxDiffRealPower;
+}
+
+void DoubleLETT::updateMaxDiffReactivePower(Node &node) {
+    maxDiffReactivePower = max(maxDiffReactivePower, imag(node.getDiffPowerLoad()));
+}
+
+void DoubleLETT::updateMaxDiffRealPower(Node &node) {
+    maxDiffRealPower = max(maxDiffRealPower, real(node.getDiffPowerLoad()));
+}
+
+
 
 void DoubleLETT::chargeFlow() {
-    for(int i = 0; i < nodeList.size(); ++i) 
+    for(int i = 0; i < nodeList.size(); ++i) {
         nodeList[i].updateGNDCurrent();
+    }
+    
 }
 
 
