@@ -4,7 +4,9 @@
 #include <iostream>
 #include "Utils.hpp"
 #include <unordered_map>
+#include <iostream>
 
+using std::cerr;
 using std::pair;
 using std::vector;
 using std::complex;
@@ -14,6 +16,9 @@ using std::polar;
 using std::unordered_map;
 
 
+void printPolar(complex<double> z) {
+    cerr << "(" << abs(z) << ", " << arg(z) << ")\n";
+}
 
 void readData(vector<vector<int>>& adj, unordered_map<pair<int, int>, complex<double>, HashPair> &Z, complex<double>& init) {
     int n, m;

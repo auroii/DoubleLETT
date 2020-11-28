@@ -27,7 +27,7 @@ private: //for now
 
 public:
     void updateLoadNode(int _label, complex<double> _load);
-    
+    void updateLoadNode(int _label, double M, double T);
     double getPrecision();
     void setPrecision(double);
 
@@ -36,7 +36,11 @@ public:
     void updateMaxDiffRealPower(Node &);
     void updateMaxDiffReactivePower(Node &);
 
-    void chargeFlow();
+	bool isAncestor(int u, int v);
+
+	void dump();
+
+    void chargeFlow(vector<int> &block	);
 
     DoubleLETT(void) {}
     DoubleLETT(vector<vector<int>>& adj, unordered_map<pair<int, int>, complex<double>, HashPair>& Z,

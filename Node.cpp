@@ -4,13 +4,14 @@
 using std::complex;
 using std::conj;
 
+
 Node::Node(int l, complex<double> _voltage, complex<double> _current, complex<double> _load) {
     voltage = _voltage;
     current = _current;
     load = _load;
     label = l;
     degree = 0;
-    currentDownstream = 0;
+    currentDownstream = complex<double>(0, 0);
 }
 
 void Node::updateGNDCurrent() {
@@ -65,7 +66,9 @@ void Node::addCurrentDownstream(complex<double> I) {
 }
 
 
-
+complex<double> Node::getTotalCurrent() {
+    return (current + currentDownstream);
+}
 
 
 

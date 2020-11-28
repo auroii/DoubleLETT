@@ -18,6 +18,7 @@ using std::conj;
 using std::max;
 using std::real;
 using std::imag;
+using std::polar;
 
 
 //Heavy Light Decomposition -> pesquisar
@@ -51,8 +52,14 @@ DoubleLETT::DoubleLETT(vector<vector<int>> &adj, unordered_map<pair<int, int>, c
         nodeList.emplace_back(i);
     }
     eulerTour(adj, ROOT, 0);
-    for(int x : euler) cerr << x << ' ';
+
+    /*for(int x : euler) cerr << x << ' ';
     cerr << '\n';
+
+    for(int i = 0; i < euler.size(); ++i) {
+        cerr << euler[i] << ' ' << euler[i+1] << ": " << isAncestor(euler[i], euler[i+1]) << '\n';
+    }
+    */
     for(int i = 0; i < euler.size(); ++i) {
         nodeList[euler[i]].setVoltage(init);
     }
@@ -63,10 +70,16 @@ DoubleLETT::DoubleLETT(vector<vector<int>> &adj, unordered_map<pair<int, int>, c
 
 void DoubleLETT::updateLoadNode(int label, complex<double> powerload) {
     nodeList[label].setPowerLoad(powerload);
-
+    updateMaxDiffRealPower(nodeList[label]);
+    updateMaxDiffReactivePower(nodeList[label]);
     while(getMaxDiffReactivePower() > precision || getMaxDiffRealPower() > precision) {
-        chargeFlow();
+        chargeFlow(euler);
     }
+}
+
+
+void DoubleLETT::updateLoadNode(int label, double M, double T) {
+    updateLoadNode(label, polar(M, T));
 }
 
 
@@ -87,24 +100,60 @@ double DoubleLETT::getMaxDiffRealPower() {
 }
 
 void DoubleLETT::updateMaxDiffReactivePower(Node &node) {
-    maxDiffReactivePower = max(maxDiffReactivePower, imag(node.getDiffPowerLoad()));
+    maxDiffReactivePower = max(maxDiffReactivePower, fabs(imag(node.getDiffPowerLoad())));
 }
 
 void DoubleLETT::updateMaxDiffRealPower(Node &node) {
-    maxDiffRealPower = max(maxDiffRealPower, real(node.getDiffPowerLoad()));
+    maxDiffRealPower = max(maxDiffRealPower, fabs((real(node.getDiffPowerLoad()))));
 }
 
 
+bool DoubleLETT::isAncestor(int u, int v) {
+    return(in[u] <= in[v] && out[u] >= out[v]);
+}
 
-void DoubleLETT::chargeFlow() {
-    for(int i = 0; i < nodeList.size(); ++i) {
-        nodeList[i].updateGNDCurrent();
+
+void DoubleLETT::chargeFlow(vector<int> & block) {
+    for(int it : block) {
+        nodeList[it].updateGNDCurrent();
     }
 
+    for(int i = 0; i < block.size()-1; ++i) {
+        if(isAncestor(block[i+1], block[i])) {
+            nodeList[block[i+1]].addCurrentDownstream(nodeList[block[i]].getTotalCurrent());
+        }
+    }
+
+    for(int i = 1; i < block.size(); ++i) {
+        if(isAncestor(block[i-1], block[i])) {
+            nodeList[block[i]].
+        setVoltage(nodeList[block[i-1]].getVoltage() 
+        - Z[{block[i], block[i-1]}]*nodeList[block[i]].getCurrentDownstream());
+        }
+    }
+    maxDiffReactivePower = 0;
+    maxDiffRealPower = 0;
+    for(int it : block) {
+        updateMaxDiffReactivePower(nodeList[it]);
+        updateMaxDiffRealPower(nodeList[it]);
+    }
 }
 
 
+void DoubleLETT::dump() {
+    for(int i = 1; i < nodeList.size(); ++i) {
+        cerr << "Node: " << nodeList[i].getLabel() << '\n';
+        cerr << "Id = ";
+        printPolar(nodeList[i].getCurrentDownstream());
+        cerr << "I = ";
+        printPolar(nodeList[i].getCurrent());
+        cerr << "V = ";
+        printPolar(nodeList[i].getVoltage());
+        cerr << "S = ";
+        printPolar(nodeList[i].getPowerLoad());
+        cerr << "dif = ";
+        printPolar(nodeList[i].getDiffPowerLoad());
+    }
 
 
-
-
+}

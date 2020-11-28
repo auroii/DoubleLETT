@@ -31,6 +31,7 @@ public:
     complex<double> getVoltage();
     complex<double> getCurrent();
     complex<double> getCurrentDownstream();
+    complex<double> getTotalCurrent();
     int getDegree();
     int getLabel();
 

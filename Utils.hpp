@@ -7,6 +7,7 @@
 #include <complex>
 #include <unordered_map>
 
+
 using std::vector;
 using std::complex;
 using std::unordered_map;
@@ -21,6 +22,8 @@ struct HashPair {
         return hash1 ^ hash2; 
     } 
 }; 
+
+void printPolar(complex<double> z);
 
 
 void readData(vector<vector<int>> &adj, unordered_map<pair<int, int>, complex<double>, HashPair>& Z,
