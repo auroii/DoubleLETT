@@ -15,12 +15,14 @@ using std::unordered_map;
 class DoubleLETT {
 private: //for now
     vector<int> depth, first; //TODO last
-    vector<int> euler;
+    vector<int> euler; //tamanho euler =  O(maxdegree*N) e maxdegree = O(sqrtN)
     vector<int> in, out;
-    vector<Node> nodeList;
+    vector<Node> nodeList; //O(N) --> acessar o no de label 5, basta chamar nodeList[5] 
     int T; //timer in DFS
     unordered_map<pair<int, int>, complex<double>, HashPair> Z;
+
     void eulerTour(vector<vector<int>>& adj, int node, int d = 0);
+    
     double precision;
     double maxDiffRealPower;
     double maxDiffReactivePower;
@@ -32,15 +34,15 @@ public:
     void setPrecision(double);
 
     double getMaxDiffRealPower();
-    double getMaxDiffReactivePower();
+    double getMaxDiffReactivePower(); //atualizar para polar // potencia aparente  
     void updateMaxDiffRealPower(Node &);
     void updateMaxDiffReactivePower(Node &);
 
-	bool isAncestor(int u, int v);
+	bool isAncestor(int u, int v); //O(1)
 
 	void dump();
 
-    void chargeFlow(vector<int> &block	);
+    void chargeFlow(vector<int> &block);
 
     DoubleLETT(void) {}
     DoubleLETT(vector<vector<int>>& adj, unordered_map<pair<int, int>, complex<double>, HashPair>& Z,

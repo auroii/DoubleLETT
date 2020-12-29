@@ -53,13 +53,13 @@ DoubleLETT::DoubleLETT(vector<vector<int>> &adj, unordered_map<pair<int, int>, c
     }
     eulerTour(adj, ROOT, 0);
 
-    /*for(int x : euler) cerr << x << ' ';
+    for(int x : euler) cerr << x << ' ';
     cerr << '\n';
 
     for(int i = 0; i < euler.size(); ++i) {
         cerr << euler[i] << ' ' << euler[i+1] << ": " << isAncestor(euler[i], euler[i+1]) << '\n';
     }
-    */
+    
     for(int i = 0; i < euler.size(); ++i) {
         nodeList[euler[i]].setVoltage(init);
     }
@@ -69,9 +69,12 @@ DoubleLETT::DoubleLETT(vector<vector<int>> &adj, unordered_map<pair<int, int>, c
 }
 
 void DoubleLETT::updateLoadNode(int label, complex<double> powerload) {
+    
     nodeList[label].setPowerLoad(powerload);
+
     updateMaxDiffRealPower(nodeList[label]);
     updateMaxDiffReactivePower(nodeList[label]);
+
     while(getMaxDiffReactivePower() > precision || getMaxDiffRealPower() > precision) {
         chargeFlow(euler);
     }
@@ -114,12 +117,14 @@ bool DoubleLETT::isAncestor(int u, int v) {
 
 
 void DoubleLETT::chargeFlow(vector<int> & block) {
+    
     for(int it : block) {
         nodeList[it].updateGNDCurrent();
     }
 
-    for(int i = 0; i < block.size()-1; ++i) {
+    for(int i = 0; i < block.size()-1; ++i) { 
         if(isAncestor(block[i+1], block[i])) {
+            //block[i] é o label e o indice simulteneamente do nó atual do array euler
             nodeList[block[i+1]].addCurrentDownstream(nodeList[block[i]].getTotalCurrent());
         }
     }
