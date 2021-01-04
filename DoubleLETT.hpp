@@ -6,6 +6,7 @@
 #include "Node.hpp"
 #include <unordered_map>
 #include "Utils.hpp"
+#include "DSU.hpp"
 
 using std::vector;
 using std::pair;
@@ -28,6 +29,8 @@ private: //for now
     double precision;
     double maxDiffRealPower;
     double maxDiffReactivePower;
+
+    DSU union_find;
 
 public:
     void updateLoadNode(int _label, complex<double> _load);

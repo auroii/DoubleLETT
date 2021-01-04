@@ -1,12 +1,12 @@
-all: Utils.o Node.o DoubleLETT.o driver.o exe
+all: Utils.o Node.o DSU.o DoubleLETT.o driver.o exe
 
 
 
-exe: DoubleLETT.o Utils.o Node.o driver.o
-	g++ -O3 -std=c++17 Utils.o Node.o DoubleLETT.o driver.o -o exe
+exe: DoubleLETT.o DSU.o Utils.o Node.o driver.o
+	g++ -O3 -std=c++17 Utils.o Node.o DSU.o DoubleLETT.o driver.o -o exe
 
 
-DoubleLETT.o: DoubleLETT.cpp Utils.hpp Node.hpp DoubleLETT.hpp
+DoubleLETT.o: DoubleLETT.cpp Utils.hpp Node.hpp DoubleLETT.hpp DSU.hpp
 	g++ -O3 -std=c++17 -c DoubleLETT.cpp
 
 
@@ -19,6 +19,8 @@ driver.o: Utils.hpp DoubleLETT.hpp Node.hpp driver.cpp
 Utils.o: Utils.hpp Utils.cpp
 	g++ -O3 -std=c++17 -c Utils.cpp
 
+DSU.o: DSU.hpp DSU.cpp
+	g++ -O3 -std=c++17 -c DSU.cpp
 
 run:
 	./exe <in

@@ -44,7 +44,8 @@ DoubleLETT::DoubleLETT(vector<vector<int>> &adj, unordered_map<pair<int, int>, c
     in.resize(adj.size());
     out.resize(adj.size());
     depth.resize(adj.size());
-    first.resize(adj.size());   
+    first.resize(adj.size());
+    union_find = DSU(adj.size());   
     Z.swap(_Z);
     T = 0;
     
