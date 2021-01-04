@@ -21,18 +21,18 @@ using std::imag;
 using std::polar;
 
 
-//Heavy Light Decomposition -> pesquisar
-
 
 void DoubleLETT::eulerTour(vector<vector<int>> &adj, int node, int d) {
     in[node] = ++T; //timer da meu tempo
     depth[node] = d;
     first[node] = euler.size(); //seto o primeiro indice do array euler que o Node(label) cur aparace
+    if(node == ROOT) occ.push_back(euler.size()); //indices de ocorrencias do raiz
     euler.push_back(node);    //insere o label cur no array euler
     for(int to : adj[node]) { //g[cur] contem todos os nos adjacentes a cur 
         if(in[to] == 0) {
             nodeList[node].updateDegree();
             eulerTour(adj, to, d+1);
+            if(node == ROOT) occ.push_back(euler.size()); //indices de ocorrencias do raiz
             euler.push_back(node); //usando a pilha de recursão, eu insiro ele novamente
         }
     }
@@ -53,16 +53,32 @@ DoubleLETT::DoubleLETT(vector<vector<int>> &adj, unordered_map<pair<int, int>, c
     }
     eulerTour(adj, ROOT, 0);
 
-    for(int x : euler) cerr << x << ' ';
+    /*for(int x : euler) cerr << x << ' ';
     cerr << '\n';
 
     for(int i = 0; i < euler.size(); ++i) {
         cerr << euler[i] << ' ' << euler[i+1] << ": " << isAncestor(euler[i], euler[i+1]) << '\n';
-    }
+    }*/
     
     for(int i = 0; i < euler.size(); ++i) {
         nodeList[euler[i]].setVoltage(init);
     }
+
+    doubleEulerTour.resize(occ.size()-1);
+
+    for(int i = 0; i < doubleEulerTour.size(); ++i) {
+        for(int j = occ[i]; j <= occ[i+1]; ++j) {
+            doubleEulerTour[i].push_back(euler[j]);
+        }    
+    }
+
+    for(auto v : doubleEulerTour) {
+        for(int x : v) {
+            cerr << x << ' ';
+        }
+        cerr << '\n';
+    }
+
 
     maxDiffReactivePower = maxDiffRealPower = 0;
     precision = 1e-9;
@@ -76,7 +92,7 @@ void DoubleLETT::updateLoadNode(int label, complex<double> powerload) {
     updateMaxDiffReactivePower(nodeList[label]);
 
     while(getMaxDiffReactivePower() > precision || getMaxDiffRealPower() > precision) {
-        chargeFlow(euler);
+        totalChargeFlow();
     }
 }
 
@@ -116,12 +132,21 @@ bool DoubleLETT::isAncestor(int u, int v) {
 }
 
 
-void DoubleLETT::chargeFlow(vector<int> & block) {
-    
+
+void DoubleLETT::totalChargeFlow() {
+    for(int i = 0; i <  doubleEulerTour.size(); ++i) {
+        subChargeFlow(i);
+    }
+}
+
+
+void DoubleLETT::subChargeFlow(int id) {
+
+    vector<int> &block = doubleEulerTour[id];
+
     for(int it : block) {
         nodeList[it].updateGNDCurrent();
     }
-
     for(int i = 0; i < block.size()-1; ++i) { 
         if(isAncestor(block[i+1], block[i])) {
             //block[i] é o label e o indice simulteneamente do nó atual do array euler
@@ -146,6 +171,18 @@ void DoubleLETT::chargeFlow(vector<int> & block) {
 
 
 void DoubleLETT::dump() {
+    cerr << "occ = ";
+    for(int x : occ) cerr << x << ' ';
+    cerr << '\n';
+
+    for(int x : euler) cerr << x << ' ';
+    cerr << '\n';
+
+    for(int i = 0; i < euler.size(); ++i) {
+        cerr << euler[i] << ' ' << euler[i+1] << ": " << isAncestor(euler[i], euler[i+1]) << '\n';
+    }
+
+
     for(int i = 1; i < nodeList.size(); ++i) {
         cerr << "Node: " << nodeList[i].getLabel() << '\n';
         cerr << "Id = ";
@@ -159,6 +196,4 @@ void DoubleLETT::dump() {
         cerr << "dif = ";
         printPolar(nodeList[i].getDiffPowerLoad());
     }
-
-
 }

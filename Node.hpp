@@ -10,7 +10,6 @@ using std::complex;
 
 class Node {
 private:
-
     complex<double> current; //current // corrente incidente
     complex<double> currentDownstream;
     complex<double> voltage; //voltage

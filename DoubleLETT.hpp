@@ -17,7 +17,9 @@ private: //for now
     vector<int> depth, first; //TODO last
     vector<int> euler; //tamanho euler =  O(maxdegree*N) e maxdegree = O(sqrtN)
     vector<int> in, out;
+    vector<int> occ;
     vector<Node> nodeList; //O(N) --> acessar o no de label 5, basta chamar nodeList[5] 
+    vector<vector<int>> doubleEulerTour;
     int T; //timer in DFS
     unordered_map<pair<int, int>, complex<double>, HashPair> Z;
 
@@ -42,7 +44,8 @@ public:
 
 	void dump();
 
-    void chargeFlow(vector<int> &block);
+    void subChargeFlow(int id);
+    void totalChargeFlow();
 
     DoubleLETT(void) {}
     DoubleLETT(vector<vector<int>>& adj, unordered_map<pair<int, int>, complex<double>, HashPair>& Z,
