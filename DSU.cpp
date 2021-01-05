@@ -18,7 +18,7 @@ DSU::DSU(int N) {
 
 int DSU::find(int cur) {
     if(cur == parent[cur]) return cur;
-    return parent[cur] = find(cur);
+    return parent[cur] = find(parent[cur]);
 }
 
 
@@ -31,6 +31,7 @@ bool DSU::join(int v, int u) {
     if(rank[v] == rank[u]) rank[v]++;
     parent[u] = v;
     size[v] += size[u];
+    return true;
 }
 
 

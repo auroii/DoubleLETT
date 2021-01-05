@@ -30,6 +30,7 @@ void DoubleLETT::eulerTour(vector<vector<int>> &adj, int node, int d) {
     euler.push_back(node);    //insere o label cur no array euler
     for(int to : adj[node]) { //g[cur] contem todos os nos adjacentes a cur 
         if(in[to] == 0) {
+            union_find.join(node, to);
             nodeList[node].updateDegree();
             eulerTour(adj, to, d+1);
             if(node == ROOT) occ.push_back(euler.size()); //indices de ocorrencias do raiz
@@ -183,6 +184,11 @@ void DoubleLETT::dump() {
         cerr << euler[i] << ' ' << euler[i+1] << ": " << isAncestor(euler[i], euler[i+1]) << '\n';
     }
 
+    cerr << "DSU = ";
+    for(int i = 1; i < nodeList.size(); ++i) {
+        cerr << union_find.find(nodeList[i].getLabel()) << ' ';
+    }
+    cerr << '\n';
 
     for(int i = 1; i < nodeList.size(); ++i) {
         cerr << "Node: " << nodeList[i].getLabel() << '\n';
